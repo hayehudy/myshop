@@ -1,0 +1,12 @@
+.hd {
+  border-color: red;
+  border-width: 3px;
+  border-style: solid;
+  /* width: 660px; */
+  color: goldenrod;
+  height: 34px;
+}
+
+.loginButton {
+  float: left;
+}
