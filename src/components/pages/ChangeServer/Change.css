@@ -3,9 +3,10 @@
   text-align: center;
 }
 
-input {
+.input {
   width: 60%;
   text-align: center;
+  margin: 2px;
 }
 
 textarea {
@@ -24,4 +25,9 @@ textarea {
   flex-direction: column;
   box-shadow: 1px 1px 4px black !important;
   padding: 2rem !important;
+}
+
+.addimg {
+  border-style: black 1px solid;
+  text-align: center;
 }

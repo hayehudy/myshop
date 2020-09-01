@@ -1,45 +1,45 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./Change.css";
 import { Input, Form, Checkbox, Button } from "antd";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
 export default function Change(props) {
-  const idToDelet = useRef();
-  const idToDelet1 = idToDelet.current;
-  const Id = useRef();
-  const putId = Id.current;
+  const [shop, setShop] = useState([]);
+  const productToDelete = useRef();
   const Title = useRef();
-  const putTitle = Title.current;
   const Image = useRef();
-  const addImage = Image.current;
   const Quantity = useRef();
-  const putQuantity = Quantity.current;
   const Price = useRef();
-  const putPrice = Price.current;
   const Description = useRef();
-  const putDescription = Description.current;
   const newImage = useRef();
-  const newImageFile = newImage.current;
+  const titleToChange = useRef();
+  const newTitle = useRef();
+
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/shop").then((res) => {
+      setShop(res.data);
+    });
+  }, []);
 
   function deleted() {
     axios
-      .delete(`http://127.0.0.1:8000/shop/${idToDelet1.value}`)
+      .delete(`http://127.0.0.1:8000/shop/${productToDelete.current.value}`)
       .then((res) => {
-        console.log(`product whith id ${idToDelet1.value} deleted`);
+        console.log(
+          `product whith title ${productToDelete.current.value} deleted`
+        );
       });
   }
 
   function addProduct() {
-    console.log("ma kore");
-    console.log(putId.value);
     const newProduct = {
-      id: putId.value,
-      title: putTitle.value,
-      image: `http://localhost:8000/images/${newImageFile.files[0].name}`,
-      quantity: putQuantity.value,
-      price: putPrice.value,
-      description: putDescription.value,
+      id: shop.length + 1,
+      title: Title.current.value,
+      image: `http://localhost:8000/images/${newImage.current.files[0].name}`,
+      quantity: Quantity.current.value,
+      price: Price.current.value,
+      description: Description.current.value,
     };
     // console.log(newProduct);
     axios.post(`http://127.0.0.1:8000/shop`, newProduct).then((res) => {
@@ -48,23 +48,18 @@ export default function Change(props) {
   }
 
   function changeProduct() {
-    console.log("nu kvar");
-    console.log(putTitle);
-
-    const newProduct = {
-      title: putTitle.value,
+    const titels = {
+      oldTitle: titleToChange.current.value,
+      newTitle: newTitle.current.value,
     };
-    axios
-      .put(`http://127.0.0.1:8000/shop/${putTitle}`, newProduct)
-      .then((res) => {
-        console.log(`shcoyech!`);
-      });
+    axios.put("http://127.0.0.1:8000/shop/", titels).then((res) => {
+      console.log(`shcoyech!`);
+    });
   }
 
   function uploadFile() {
-    console.log(newImageFile.files[0]);
-    axios.post("http://127.0.0.1:8000/upload", newImageFile.files[0], {
-      params: { filename: newImageFile.files[0].name },
+    axios.post("http://127.0.0.1:8000/upload", newImage.current.files[0], {
+      params: { filename: newImage.current.files[0].name },
     });
   }
 
@@ -80,44 +75,41 @@ export default function Change(props) {
 
   return (
     <div className="borderToChange">
-      מחיקת מוצר
-      <input
-        className="idToDelete"
-        ref={idToDelet}
-        placeholder="הכנס את האיי-די של המוצר שברצונך למחוק"
-      ></input>
+      <h3> מחיקת מוצר</h3>
+      בחר את הפריט שברצונך למחוק
+      <select className="input" ref={productToDelete} size="3" multiple>
+        {shop.map((product) => (
+          <option value={product.title}>{product.title}</option>
+        ))}
+      </select>
       <button className="sendId" onClick={deleted}>
         שלח
       </button>
       <br />
-      הוספת מוצר / שינוי מוצר
+      <h3> הוספת מוצר</h3>
       <input
-        className="putId"
-        placeholder="רשום את האיי-די של הפריט שברצונך להוסיף או לשנות"
-        ref={Id}
-      ></input>
-      <input
-        className="putTitle"
+        className="input"
         ref={Title}
         placeholder="רשום את שמו של הפריט החדש"
       ></input>
-      {/* <input
-        className="addImage"
-        ref={Image}
-        placeholder="צרף כתובת של התמונה של הפריט החדש"
-      ></input> */}
+      <div className="addimg">
+        בחר את תמונת המוצר החדש
+        <br />
+        <input className="input" type="file" ref={newImage} id="uploadedFile" />
+        <button onClick={uploadFile}>העלה את התמונה לשרת</button>
+      </div>
       <input
-        className="putQuantity"
+        className="input"
         ref={Quantity}
         placeholder="רשום את המלאי של הפריט החדש"
       ></input>
       <input
-        className="putPrice"
+        className="input"
         ref={Price}
         placeholder="רשום את מחירו של הפריט החדש"
       ></input>
       <textarea
-        className="description"
+        className="input"
         ref={Description}
         rows="3"
         placeholder="הכנס את תיאור המוצר החדש"
@@ -125,13 +117,21 @@ export default function Change(props) {
       <button className="sendProduct" onClick={addProduct}>
         הוסף מוצר
       </button>
+      <br />
+      <h3> שינוי שם מוצר</h3>
+      <input
+        className="input"
+        ref={titleToChange}
+        placeholder="רשום את שמו הנוכחי של המוצר"
+      ></input>
+      <input
+        className="input"
+        ref={newTitle}
+        placeholder="רשום את שמו החדש של המוצר"
+      ></input>
       <button className="changeProduct" onClick={changeProduct}>
         שנה מוצר
       </button>
-      <br />
-      בחר את תמונת המוצר שברצונך להוסיף / לשנות
-      <input type="file" ref={newImage} id="uploadedFile" />
-      <button onClick={uploadFile}>העלה את התמונה לשרת</button>
       <br />
       <br />
       <Link to="/">בחזרה לחנות</Link>

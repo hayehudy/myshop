@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import PageOfProduct from "../src/components/pages/pageOfProduct";
+import PageOfProduct from "../src/components/pages/pageofproduct/pageOfProduct";
 import Login from "../src/components/pages/pageOfLogin/login";
-import Change from "../src/components/pages/ChangeServar/Change";
+import Change from "../src/components/pages/ChangeServer/Change";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Header from "../src/components/header/header";
-import Products from "../src/components/product/products";
-import Items from "../src/items/items";
+import Products from "../src/components/products/products";
+import Items from "../src/components/items/items";
 import axios from "axios";
 
 function App() {

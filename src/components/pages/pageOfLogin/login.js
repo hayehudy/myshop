@@ -13,9 +13,7 @@ const Login = (props) => {
   };
 
   const [validPassword, setValidPassword] = useState(false);
-  const [valid1, setValid1] = useState(true);
-  const [valid2, setValid2] = useState(true);
-  const [change, setChange] = useState("");
+  // const [change, setChange] = useState("");
 
   const onFinish = (values) => {
     console.log(values);
@@ -29,9 +27,9 @@ const Login = (props) => {
     console.log("Failed:", errorInfo);
   };
 
-  const onchange = () => {
-    setChange(change);
-  };
+  // const onchange = () => {
+  //   setChange(change);
+  // };
 
   return (
     <div className="border">
