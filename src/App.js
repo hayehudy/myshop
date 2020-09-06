@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./App.css";
 import PageOfProduct from "../src/components/pages/pageofproduct/pageOfProduct";
 import Login from "../src/components/pages/pageOfLogin/login";
@@ -8,92 +8,91 @@ import Header from "../src/components/header/header";
 import Products from "../src/components/products/products";
 import Items from "../src/components/items/items";
 import axios from "axios";
+import socketIOClient from "socket.io-client";
+
+import { Provider } from "./context";
 
 function App() {
+  const [shopFromServer, setShopFromServer] = useState([]);
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState(0);
+  const [cartCharge, setCartCharge] = useState(0);
   const [itemsOfCart, setItems] = useState([]);
+  const [search, setSearch] = useState(null);
+  const theShop = {
+    data: products,
+    changeData: (value) => setProducts(value),
+    initialData: shopFromServer,
+    cart: cart,
+    cartItems: itemsOfCart,
+    changeCart: (value) => setCart(value),
+    changeCartQuantity: (value) => setItems(value),
+    cartCharge: cartCharge,
+    setCartCharge: (value) => setCartCharge(value),
+    search: search,
+    setSearch: (value) => setSearch(value),
+  };
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/shop", { params: { search: search } })
+      .then((res) => {
+        setProducts(res.data);
+      });
+  }, [search]);
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/shop").then((res) => {
-      setProducts(res.data);
+      setShopFromServer(res.data);
     });
   }, []);
 
-  const add = (product, quantityOnCart) => {
-    setCart(cart + 1);
-    //change the quantity of the product in the shop
-    let newProducts = products;
-    product.quantity = product.quantity - 1;
-    const place1 = newProducts.findIndex((x) => x.id === product.id);
-    newProducts[place1] = product;
-    setProducts(newProducts);
-    //add product to the cart or change his quantity on cart
-    const newItem = product;
-    const place = itemsOfCart.findIndex((x) => x.id === product.id);
-    if (place > -1) {
-      const newItems = itemsOfCart;
-      const replaceQuanti = (newItems[place].quantityOnCart = quantityOnCart);
-      setItems(newItems);
-    } else {
-      const addQuantiOnCart = (newItem.quantityOnCart = quantityOnCart);
-      setItems([...itemsOfCart, newItem]);
-    }
-  };
-
-  const remove = (product, quantityOnCart) => {
-    if (cart) {
-      setCart(cart - 1);
-    }
-    let newProducts = products;
-    product.quantity = product.quantity + 1;
-    const place1 = newProducts.findIndex((x) => x.id === product.id);
-    newProducts[place1] = product;
-    setProducts(newProducts);
-    const newItem1 = product;
-    const place = itemsOfCart.findIndex((x) => x.title === product.title);
-    if (place > -1) {
-      const newItems1 = itemsOfCart;
-      if (newItems1[place].quantityOnCart !== 1) {
-        const replaceQuanti = (newItems1[place].quantityOnCart =
-          quantityOnCart - 2);
-        setItems(newItems1);
-      } else {
-        const removeItem = newItems1.splice([place], 1);
-        setItems(newItems1);
-      }
-    }
-  };
+  useEffect(() => {
+    const socket = socketIOClient("http://localhost:8000");
+    socket.on("updateQuantity", (data) => {
+      setProducts(data);
+    });
+    socket.on("deleteProduct", (data) => {
+      setProducts(data);
+    });
+    socket.on("addProduct", (data) => {
+      setProducts(data);
+    });
+  }, []);
 
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/">
-          <div className="App">
-            <div className="hed">
-              <Header />
-            </div>
-            <div className="cart">
-              פריטים שנוספו לעגלה: {cart}
-              <Items className="items" items={itemsOfCart} />
-            </div>
+    <Provider value={theShop}>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <div className="App">
+              <div className="hed">
+                <Header />
+              </div>
+              <div className="cart">
+                פריטים שנוספו לעגלה: {cart}
+                <br />
+                לתשלום: {cartCharge}
+                <Items className="items" items={itemsOfCart} />
+              </div>
 
-            <div className="prod">
-              <Products products={products} add={add} remove={remove} />
+              <div className="prod">
+                <Products products={products} />
+              </div>
             </div>
-          </div>
-        </Route>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/changeServer">
-          <Change />
-        </Route>
-        <Route exact path="/product/:id">
-          <PageOfProduct />
-        </Route>
-      </Switch>
-    </Router>
+          </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/changeServer">
+            <Change />
+          </Route>
+          <Route exact path="/product/:id">
+            <PageOfProduct />
+          </Route>
+        </Switch>
+      </Router>
+    </Provider>
   );
 }
 

@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./products.css";
 import Product from "./product";
 import { Slider } from "antd";
+import Context from "../../context";
 
 function Products(props) {
+  const data = useContext(Context).data;
+  const search = useContext(Context).search;
+  const setSearch = useContext(Context).setSearch;
+
   const [value0, setValue0] = useState(0);
   const [value1, setValue1] = useState(2001);
 
   function onAfterChange(value) {
     setValue0(value[0]);
     setValue1(value[1]);
+  }
+
+  function searchProduct(value) {
+    setSearch(value);
   }
 
   return (
@@ -19,14 +28,17 @@ function Products(props) {
         max={2001}
         onAfterChange={onAfterChange}
       />
-      {props.products.map(
+      <input onChange={(e) => searchProduct(e.target.value)}></input> :חפש מוצר
+      בחנות
+      <br />
+      {data.map(
         (product) =>
-          product.price > value0 &&
-          product.price < value1 && (
+          product.price > value0 && (
+            // product.price < value1 && (
             <div className="pr">
               <Product
-                add={props.add}
-                remove={props.remove}
+                // add={props.add}
+                // remove={props.remove}
                 product={product}
               />
             </div>

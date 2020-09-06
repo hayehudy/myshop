@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./header.css";
 import { Link } from "react-router-dom";
+import MyContext from "../../context";
 
 function Header() {
   return (

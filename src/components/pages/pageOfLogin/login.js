@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Input, Form, Checkbox, Button } from "antd";
 import "./login.css";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useHistory } from "react-router-dom";
 
 const Login = (props) => {
   const layout = {
@@ -12,23 +12,20 @@ const Login = (props) => {
     wrapperCol: { offset: 8, span: 16 },
   };
 
-  const [validPassword, setValidPassword] = useState(false);
-  // const [change, setChange] = useState("");
+  let history = useHistory();
 
   const onFinish = (values) => {
-    console.log(values);
     if (values.password === "123456") {
-      console.log("yofi");
-      setValidPassword(true);
+      history.push("/changeServer");
     }
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+  // const onFinishFailed = (errorInfo) => {
+  //   console.log("Failed:", errorInfo);
+  // };
 
   // const onchange = () => {
-  //   setChange(change);
+  //
   // };
 
   return (
@@ -38,8 +35,8 @@ const Login = (props) => {
         name="basic"
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        onFieldsChange={onchange}
+        // onFinishFailed={onFinishFailed}
+        // onFieldsChange={onchange}
       >
         <Form.Item
           name="password"
@@ -47,25 +44,14 @@ const Login = (props) => {
         >
           <Input
             className="enterPassword"
-            placeholder="הכנס את הסיסמה 123456 ולחץ פעמיים על כפתור השליחה"
+            placeholder="הכנס את הסיסמה 123456"
             type="password"
           />
         </Form.Item>
-        {!validPassword && (
-          <Button className="send" type="primary" htmlType="submit">
-            שלח
-          </Button>
-        )}
-        {validPassword && (
-          <Link to="/changeServer">
-            <Button className="send" type="primary" htmlType="submit">
-              שלח
-            </Button>
-          </Link>
-        )}
 
-        {(close) => <div></div>}
-
+        <Button className="send" type="primary" htmlType="submit">
+          שלח
+        </Button>
         <br />
         <br />
         <Link to="/" className="linkShop">

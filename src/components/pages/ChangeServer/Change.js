@@ -13,8 +13,8 @@ export default function Change(props) {
   const Price = useRef();
   const Description = useRef();
   const newImage = useRef();
-  const titleToChange = useRef();
-  const newTitle = useRef();
+  const title = useRef();
+  const newQuantity = useRef();
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/shop").then((res) => {
@@ -48,12 +48,12 @@ export default function Change(props) {
   }
 
   function changeProduct() {
-    const titels = {
-      oldTitle: titleToChange.current.value,
-      newTitle: newTitle.current.value,
+    const updates = {
+      title: title.current.value,
+      newQuantity: newQuantity.current.value,
     };
-    axios.put("http://127.0.0.1:8000/shop/", titels).then((res) => {
-      console.log(`shcoyech!`);
+    axios.put("http://127.0.0.1:8000/shop/update", updates).then((res) => {
+      console.log("המלאי התעדכן");
     });
   }
 
@@ -118,16 +118,16 @@ export default function Change(props) {
         הוסף מוצר
       </button>
       <br />
-      <h3> שינוי שם מוצר</h3>
+      <h3> עדכון המלאי של מוצר</h3>
       <input
         className="input"
-        ref={titleToChange}
-        placeholder="רשום את שמו הנוכחי של המוצר"
+        ref={title}
+        placeholder="רשום את שם המוצר"
       ></input>
       <input
         className="input"
-        ref={newTitle}
-        placeholder="רשום את שמו החדש של המוצר"
+        ref={newQuantity}
+        placeholder="רשום את המלאי המעודכן"
       ></input>
       <button className="changeProduct" onClick={changeProduct}>
         שנה מוצר

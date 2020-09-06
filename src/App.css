@@ -22,7 +22,8 @@
   border-width: 3px;
   border-color: orange;
   height: 620px;
-  width: 660px;
+  width: 665px;
+  overflow-y: auto;
 }
 
 .cart {
