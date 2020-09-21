@@ -7,20 +7,38 @@ import Context from "../../context";
 function Product(props) {
   const prop = props.product;
   const trueId = prop.id;
-  const data = useContext(Context).data;
-  const initialData = useContext(Context).initialData;
-  const changeData = useContext(Context).changeData;
-  const cart = useContext(Context).cart;
-  const setCart = useContext(Context).changeCart;
-  const itemsOfCart = useContext(Context).cartItems;
-  const setItems = useContext(Context).changeCartQuantity;
-  const cartCharge = useContext(Context).cartCharge;
-  const setCartCharge = useContext(Context).setCartCharge;
+  const {
+    data,
+    initialData,
+    changeData,
+    cart,
+    setCart,
+    itemsOfCart,
+    setItems,
+    cartCharge,
+    setCartCharge,
+    name,
+    password,
+    cartId,
+    setCartId,
+  } = useContext(Context);
+
+  const body = {
+    name: name,
+    password: password,
+    title: prop.title,
+    cartId: cartId,
+  };
 
   function add() {
     const placeA = initialData.findIndex((x) => x.id === prop.id);
     const firstQuantity = initialData[placeA].quantity;
     if (prop.quantity > 0) {
+      if (name && password) {
+        axios.post("http://127.0.0.1:8000/shop/cartAdd", body).then((res) => {
+          setCartId(res.data);
+        });
+      }
       setCart(cart + 1);
       setCartCharge(cartCharge + prop.price);
       //change the quantity of the product in the shop
@@ -49,6 +67,10 @@ function Product(props) {
     const placeA = initialData.findIndex((x) => x.id === prop.id);
     const firstQuantity = initialData[placeA].quantity;
     if (prop.quantity < firstQuantity) {
+      if (name && password) {
+        //
+        axios.post("http://127.0.0.1:8000/shop/cartRemove", body);
+      }
       setCart(cart - 1);
       setCartCharge(cartCharge - prop.price);
       //change the quantity of the product in the shop

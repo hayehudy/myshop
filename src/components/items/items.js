@@ -3,7 +3,7 @@ import "./items.css";
 import Context from "../../context";
 
 function Items(props) {
-  const itemsOfCart = useContext(Context).cartItems;
+  const { itemsOfCart } = useContext(Context);
 
   return (
     <div>

@@ -1,15 +1,24 @@
 import React, { useContext } from "react";
 import "./header.css";
 import { Link } from "react-router-dom";
-import MyContext from "../../context";
+import Context from "../../context";
 
 function Header() {
+  const { name, password } = useContext(Context);
   return (
     <div className="hd">
-      המוצרים שלנו
+      <h3>המוצרים שלנו</h3>
       <Link to="/login">
         <button className="loginButton">התחבר כמנהל</button>
       </Link>
+      <span className="CustomerLoginButton">
+        {!name && (
+          <Link to="/CustomerLogin">
+            <button>התחבר כלקוח</button>
+          </Link>
+        )}
+        {name && password && <span>שלום {name}</span>}
+      </span>
     </div>
   );
 }

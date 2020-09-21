@@ -5,9 +5,7 @@ import { Slider } from "antd";
 import Context from "../../context";
 
 function Products(props) {
-  const data = useContext(Context).data;
-  const search = useContext(Context).search;
-  const setSearch = useContext(Context).setSearch;
+  const { data, search, setSearch } = useContext(Context);
 
   const [value0, setValue0] = useState(0);
   const [value1, setValue1] = useState(2001);

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import "./App.css";
 import PageOfProduct from "../src/components/pages/pageofproduct/pageOfProduct";
 import Login from "../src/components/pages/pageOfLogin/login";
+import CustomerLogin from "../src/components/pages/CustomerLogin/CustomerLogin";
 import Change from "../src/components/pages/ChangeServer/Change";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Header from "../src/components/header/header";
@@ -19,18 +20,27 @@ function App() {
   const [cartCharge, setCartCharge] = useState(0);
   const [itemsOfCart, setItems] = useState([]);
   const [search, setSearch] = useState(null);
+  const [cartId, setCartId] = useState(null);
+  const [name, setName] = useState(null);
+  const [password, setPassword] = useState(null);
   const theShop = {
     data: products,
     changeData: (value) => setProducts(value),
     initialData: shopFromServer,
     cart: cart,
-    cartItems: itemsOfCart,
-    changeCart: (value) => setCart(value),
-    changeCartQuantity: (value) => setItems(value),
+    itemsOfCart: itemsOfCart,
+    setCart: (value) => setCart(value),
+    setItems: (value) => setItems(value),
     cartCharge: cartCharge,
     setCartCharge: (value) => setCartCharge(value),
     search: search,
     setSearch: (value) => setSearch(value),
+    cartId: cartId,
+    setCartId: (value) => setCartId(value),
+    name: name,
+    setName: (value) => setName(value),
+    password: password,
+    setPassword: (value) => setPassword(value),
   };
 
   useEffect(() => {
@@ -83,6 +93,9 @@ function App() {
           </Route>
           <Route exact path="/login">
             <Login />
+          </Route>
+          <Route exact path="/customerLogin">
+            <CustomerLogin />
           </Route>
           <Route exact path="/changeServer">
             <Change />

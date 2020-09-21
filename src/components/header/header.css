@@ -4,9 +4,13 @@
   border-style: solid;
   /* width: 660px; */
   color: goldenrod;
-  height: 34px;
+  height: 70px;
 }
 
 .loginButton {
   float: left;
+}
+
+.CustomerLoginButton {
+  float: right;
 }

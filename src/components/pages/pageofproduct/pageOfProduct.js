@@ -12,6 +12,7 @@ export default function PageOfProduct() {
       setPageOP(res.data);
     });
   }, []);
+  console.log(PageOP);
   return (
     <div className="pap">
       <h1>{PageOP.title}</h1>

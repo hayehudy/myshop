@@ -1,18 +1,22 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import "./Change.css";
 import { Input, Form, Checkbox, Button } from "antd";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import Context from "../../../context";
 
 export default function Change(props) {
+  const cartId = useContext(Context).cartId;
+  const setCartId = useContext(Context).setCartId;
   const [shop, setShop] = useState([]);
   const productToDelete = useRef();
   const Title = useRef();
-  const Image = useRef();
+  // const Image = useRef();
   const Quantity = useRef();
   const Price = useRef();
   const Description = useRef();
   const newImage = useRef();
+
   const title = useRef();
   const newQuantity = useRef();
 
@@ -24,7 +28,9 @@ export default function Change(props) {
 
   function deleted() {
     axios
-      .delete(`http://127.0.0.1:8000/shop/${productToDelete.current.value}`)
+      .delete("http://127.0.0.1:8000/shop", {
+        title: productToDelete.current.value,
+      })
       .then((res) => {
         console.log(
           `product whith title ${productToDelete.current.value} deleted`
@@ -47,7 +53,7 @@ export default function Change(props) {
     });
   }
 
-  function changeProduct() {
+  function updateProduct() {
     const updates = {
       title: title.current.value,
       newQuantity: newQuantity.current.value,
@@ -62,6 +68,15 @@ export default function Change(props) {
       params: { filename: newImage.current.files[0].name },
     });
   }
+
+  // function addtoserver() {
+  // {cartId:cartId, name:name, password:password,title:title}
+
+  //   axios.post("http://127.0.0.1:8000/shop/cartAdd", ).then((res) => {
+  //     setCartId(res);
+  //     console.log(cartId);
+  //   });
+  // }
 
   //   const newProduct = {
   //     title: idToChange1,
@@ -129,10 +144,11 @@ export default function Change(props) {
         ref={newQuantity}
         placeholder="רשום את המלאי המעודכן"
       ></input>
-      <button className="changeProduct" onClick={changeProduct}>
+      <button className="changeProduct" onClick={updateProduct}>
         שנה מוצר
       </button>
       <br />
+      {/* <button onClick={addtoserver}>קבל איידי</button> */}
       <br />
       <Link to="/">בחזרה לחנות</Link>
     </div>

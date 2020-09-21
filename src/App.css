@@ -17,7 +17,7 @@
 .prod {
   position: absolute;
   margin: 7px;
-  top: 35px;
+  top: 72px;
   border-style: solid;
   border-width: 3px;
   border-color: orange;
@@ -33,7 +33,7 @@
   border-color: brown;
   border-style: solid;
   margin: 7px;
-  top: 35px;
+  top: 72px;
   right: 3px;
   height: 620px;
   width: 165px;
