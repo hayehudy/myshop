@@ -21,16 +21,15 @@ export default function Change(props) {
   const newQuantity = useRef();
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/shop").then((res) => {
+    axios.get("http://127.0.0.1:8000/api/shop").then((res) => {
       setShop(res.data);
     });
   }, []);
 
   function deleted() {
+    const titleToDelete={title:productToDelete.current.value}
     axios
-      .delete("http://127.0.0.1:8000/shop", {
-        title: productToDelete.current.value,
-      })
+      .delete("http://127.0.0.1:8000/api/shop",{params:titleToDelete})
       .then((res) => {
         console.log(
           `product whith title ${productToDelete.current.value} deleted`
@@ -48,7 +47,7 @@ export default function Change(props) {
       description: Description.current.value,
     };
     // console.log(newProduct);
-    axios.post(`http://127.0.0.1:8000/shop`, newProduct).then((res) => {
+    axios.post(`http://127.0.0.1:8000/api/shop`, newProduct).then((res) => {
       console.log(`shcoyech!`);
     });
   }
@@ -58,35 +57,16 @@ export default function Change(props) {
       title: title.current.value,
       newQuantity: newQuantity.current.value,
     };
-    axios.put("http://127.0.0.1:8000/shop/update", updates).then((res) => {
+    axios.put("http://127.0.0.1:8000/api/shop/update", updates).then((res) => {
       console.log("המלאי התעדכן");
     });
   }
 
   function uploadFile() {
-    axios.post("http://127.0.0.1:8000/upload", newImage.current.files[0], {
+    axios.post("http://127.0.0.1:8000/api/upload", newImage.current.files[0], {
       params: { filename: newImage.current.files[0].name },
     });
   }
-
-  // function addtoserver() {
-  // {cartId:cartId, name:name, password:password,title:title}
-
-  //   axios.post("http://127.0.0.1:8000/shop/cartAdd", ).then((res) => {
-  //     setCartId(res);
-  //     console.log(cartId);
-  //   });
-  // }
-
-  //   const newProduct = {
-  //     title: idToChange1,
-  //   };
-  //   axios
-  //     .put(`http://127.0.0.1:8000/shop/${idToChange1}`, newProduct)
-  //     .then((res) => {
-  //       console.log(`shcoyech!`);
-  //     });
-  // }
 
   return (
     <div className="borderToChange">
@@ -224,3 +204,23 @@ export default function Change(props) {
   //     </div>
   //   );
 }
+
+
+  // function addtoserver() {
+  // {cartId:cartId, name:name, password:password,title:title}
+
+  //   axios.post("http://127.0.0.1:8000/shop/cartAdd", ).then((res) => {
+  //     setCartId(res);
+  //     console.log(cartId);
+  //   });
+  // }
+
+  //   const newProduct = {
+  //     title: idToChange1,
+  //   };
+  //   axios
+  //     .put(`http://127.0.0.1:8000/shop/${idToChange1}`, newProduct)
+  //     .then((res) => {
+  //       console.log(`shcoyech!`);
+  //     });
+  // }

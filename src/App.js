@@ -2,18 +2,20 @@ import React, { useState, useEffect, useContext } from "react";
 import "./App.css";
 import PageOfProduct from "../src/components/pages/pageofproduct/pageOfProduct";
 import Login from "../src/components/pages/pageOfLogin/login";
+import GoToPay from "../src/components/pages/GoToPay/GoToPay";
 import CustomerLogin from "../src/components/pages/CustomerLogin/CustomerLogin";
 import Change from "../src/components/pages/ChangeServer/Change";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Header from "../src/components/header/header";
 import Products from "../src/components/products/products";
-import Items from "../src/components/items/items";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
+import isLocalStorage from "use-persisted-state";
 
 import { Provider } from "./context";
-
+const useLocalStorage=isLocalStorage("products");
 function App() {
+ 
   const [shopFromServer, setShopFromServer] = useState([]);
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState(0);
@@ -45,14 +47,14 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/shop", { params: { search: search } })
+      .get("http://127.0.0.1:8000/api/shop", { params: { search: search } })
       .then((res) => {
         setProducts(res.data);
       });
   }, [search]);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/shop").then((res) => {
+    axios.get("http://127.0.0.1:8000/api/shop").then((res) => {
       setShopFromServer(res.data);
     });
   }, []);
@@ -79,15 +81,16 @@ function App() {
               <div className="hed">
                 <Header />
               </div>
-              <div className="cart">
-                פריטים שנוספו לעגלה: {cart}
+              <div>
+                 {/* className="cart"> */}
+                {/* פריטים שנוספו לעגלה: {cart}
                 <br />
-                לתשלום: {cartCharge}
-                <Items className="items" items={itemsOfCart} />
+                לתשלום: {cartCharge} */}
+                <Products className="items"  products={itemsOfCart} information={"cart"}/>
               </div>
 
               <div className="prod">
-                <Products products={products} />
+                <Products products={products} information={"shop"}/>
               </div>
             </div>
           </Route>
@@ -96,6 +99,10 @@ function App() {
           </Route>
           <Route exact path="/customerLogin">
             <CustomerLogin />
+          </Route>
+          <Route exact path="/goToPay">
+             <Products className="items" products={itemsOfCart} information={"pay"}/>
+             <GoToPay />
           </Route>
           <Route exact path="/changeServer">
             <Change />

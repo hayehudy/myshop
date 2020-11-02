@@ -1,3 +1,15 @@
+
+
+
+<button onClick={()=>setCount((currentCount)=>currentCount+1)}></button>
+
+<button onClick={()=>setCount(count+1)}></button>
+
+
+
+
+
+
 // import React, { useState } from "react";
 // import { Input, Form, Button } from "antd";
 // import "./SendPhoneNumber.css";

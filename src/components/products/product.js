@@ -7,6 +7,9 @@ import Context from "../../context";
 function Product(props) {
   const prop = props.product;
   const trueId = prop.id;
+  const imgClass=props.information==="shop"?"shopImg":"cartImg";
+  const buttonOfAdd=props.information==="shop"?"הוסף מוצר לעגלה":"+";
+  const buttonOfRemove=props.information==="shop"?"הסר מוצר מהעגלה":"-";
   const {
     data,
     initialData,
@@ -35,7 +38,7 @@ function Product(props) {
     const firstQuantity = initialData[placeA].quantity;
     if (prop.quantity > 0) {
       if (name && password) {
-        axios.post("http://127.0.0.1:8000/shop/cartAdd", body).then((res) => {
+        axios.post("http://127.0.0.1:8000/api/shop/cartAdd", body).then((res) => {
           setCartId(res.data);
         });
       }
@@ -69,7 +72,7 @@ function Product(props) {
     if (prop.quantity < firstQuantity) {
       if (name && password) {
         //
-        axios.post("http://127.0.0.1:8000/shop/cartRemove", body);
+        axios.post("http://127.0.0.1:8000/api/shop/cartRemove", body);
       }
       setCart(cart - 1);
       setCartCharge(cartCharge - prop.price);
@@ -101,13 +104,17 @@ function Product(props) {
       <Link to={`/product/${trueId}`}>
         <h2>{prop.title}</h2>
         <div>
-          <img src={prop.image} />
+          <img src={prop.image} className={imgClass} />
         </div>
+        {props.information==="shop"?
+        (<>
         <div>המחיר: {prop.price}</div>
-        <div>המלאי בחנות: {prop.quantity} </div>
-      </Link>
-      <button onClick={add}>הוסף מוצר לעגלה</button>
-      <button onClick={remove}>הסר מוצר מהעגלה</button>
+        <div>המלאי בחנות: {prop.quantity} </div></>):
+        ( <><div>הכמות: {prop.quantityOnCart}</div>
+          <div>לתשלום: {prop.price * prop.quantityOnCart}</div></>)}
+      </Link>      
+      <button onClick={add}>{buttonOfAdd}</button>
+        <button onClick={remove}>{buttonOfRemove}</button>
     </div>
   );
 }

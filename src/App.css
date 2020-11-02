@@ -5,7 +5,7 @@
   border-color: green;
   border-style: solid;
   width: 865px;
-  height: 670px;
+  height: 710px;
 }
 
 .hed {
@@ -14,7 +14,7 @@
   margin: 7px;
 }
 
-.prod {
+/* .prod {
   position: absolute;
   margin: 7px;
   top: 72px;
@@ -22,11 +22,11 @@
   border-width: 3px;
   border-color: orange;
   height: 620px;
-  width: 665px;
+  width: 670px;
   overflow-y: auto;
-}
+} */
 
-.cart {
+/* .cart {
   position: absolute;
   display: inline;
   border-width: 3px;
@@ -39,7 +39,7 @@
   width: 165px;
   flex: 1 1 auto;
   overflow-y: auto;
-}
+} */
 
 .App-logo {
   height: 40vmin;

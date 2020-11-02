@@ -1,9 +1,9 @@
-img {
+imgInCart {
   width: 80px;
   height: 60px;
 }
 
-.product {
+.productInCart {
   /* position: absolute; */
   display: inline;
   float: right;
